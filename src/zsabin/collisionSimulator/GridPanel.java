@@ -7,6 +7,10 @@ import java.util.List;
 
 /**
  * @author zsabin
+ *
+ * Particles exist in a grid-like structure where each square of the grid is equal to the diameter of the
+ * particle. Particles move one square of the grid at a time and are treated one-dimensionally in terms of 
+ * collisons with other particles (see note about how collisions are detected below).
  */
 public class GridPanel extends JPanel
 {
@@ -26,6 +30,13 @@ public class GridPanel extends JPanel
         this.particles = Collections.unmodifiableList(particles);
     }
 
+    /* A collision is only detected if particles are competing for the same square in the grid. This means that, 
+     * in terms of collisions, particles are treated one-dimensionally. That is, they can only collide if their
+     * centers collide; we do not consider it a collision when only the edges of particles come in contact.
+     * Consequently, when particles visually "brush up" against eachother as they pass by diagonally in adjacent 
+     * squares of the grid, it will appear that the particles went through eachother, but we ignore this for the 
+     * purposes of this simple simulator.
+     */
     public Particle detectCollision(int id, ImmutablePoint nextPosition)
     {
         for (Particle particle : particles)
